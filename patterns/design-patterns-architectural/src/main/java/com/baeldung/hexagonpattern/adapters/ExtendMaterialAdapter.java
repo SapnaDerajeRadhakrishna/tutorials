@@ -10,7 +10,15 @@ import com.baeldung.hexagonpattern.ports.ExtendMaterialPort;
 
 public class ExtendMaterialAdapter implements ExtendMaterialPort {
 
-	LibraryMaterialBorrowLogic materialBorrowLogic = MaterialsOrderFactory.getMaterialOrderProcessor();
+	LibraryMaterialBorrowLogic libraryMaterialBorrowLogic = MaterialsOrderFactory.getMaterialOrderProcessor();
+
+	@Override
+	public LibraryMaterialStatus processMaterialOrder(List<LibraryMaterialType> items) throws Exception {
+		if (items.size() <= 0) {
+			throw new Exception("No library items to process");
+		}
+		return libraryMaterialBorrowLogic.processMaterial(items);
+	}
 
 	@Override
 	public LibraryMaterialType createItem(String item) {
@@ -21,14 +29,6 @@ public class ExtendMaterialAdapter implements ExtendMaterialPort {
 			return null;
 		}
 		return materialType;
-	}
-
-	@Override
-	public LibraryMaterialStatus processMaterialOrder(List<LibraryMaterialType> items) throws Exception {
-		if (items.size() <= 0) {
-			throw new Exception("No library items to process");
-		}
-		return materialBorrowLogic.processMaterial(items);
 	}
 
 }
